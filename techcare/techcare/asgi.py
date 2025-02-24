@@ -38,8 +38,8 @@ async def check_db_connection():
         await asyncio.sleep(wait)
         current_try += 1
 
-# Initialize application after DB check
-application = get_asgi_application()
+async def get_application():
+    await check_db_connection()
+    return get_asgi_application()
 
-# Run DB connection check
-asyncio.run(check_db_connection())
+application = asyncio.get_event_loop().run_until_complete(get_application())
