@@ -37,7 +37,7 @@ ALLOWED_HOSTS = [
     'https://one-health-0oxk.onrender.com',  
     'localhost',
     '127.0.0.1',
- 
+    '*',
 ]
 
 
