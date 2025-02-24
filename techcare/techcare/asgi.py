@@ -15,10 +15,9 @@ from asgiref.sync import sync_to_async
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "techcare.settings")
 
-# Get the base application
-application = get_asgi_application()
+# Get the Django ASGI application
+django_application = get_asgi_application()
 
-# Wrap the application to include database connection check
 @sync_to_async
 def check_database():
     try:
@@ -27,7 +26,7 @@ def check_database():
         return False
     return True
 
-async def database_middleware(scope, receive, send):
+async def application(scope, receive, send):
     if scope["type"] == "lifespan":
         # Handle lifespan messages
         message = await receive()
@@ -42,8 +41,5 @@ async def database_middleware(scope, receive, send):
             await send({"type": "lifespan.shutdown.complete"})
         return
 
-    # Pass through to the main application
-    await application(scope, receive, send)
-
-# Replace the base application with our wrapped version
-application = database_middleware
+    # Pass through to the Django application
+    return await django_application(scope, receive, send)
