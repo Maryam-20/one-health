@@ -95,14 +95,9 @@ if config('ENVIRONMENT', default='development') == 'production':
     # Production database (Render)
     DATABASES = {
         'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
             conn_max_age=600,
             conn_health_checks=True,
-            engine='django.db.backends.postgresql',
             ssl_require=True,
-            options={
-                'sslmode': 'require',
-            }
         )
     }
 else:
