@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -90,17 +91,16 @@ WSGI_APPLICATION = "techcare.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": config('DB_NAME'),
-        "USER": config('DB_USER'),
-        "PASSWORD": config('DB_PASSWORD'),
-        "HOST": config('DB_HOST', default = "localhost"),
-        "PORT": config('DB_PORT', cast = int, default = 3308),
-        'OPTIONS':  {
-            'autocommit':True,
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        engine='django.db.backends.postgresql',
+        ssl_require=True,
+        options={
+            'sslmode': 'require',
         }
-    }
+    )
 }
 
 
