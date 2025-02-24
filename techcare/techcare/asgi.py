@@ -12,34 +12,38 @@ from django.core.asgi import get_asgi_application
 from django.db import connections
 from django.db.utils import OperationalError
 from asgiref.sync import sync_to_async
-import asyncio
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "techcare.settings")
 
-async def check_db_connection():
-    max_tries = 10
-    current_try = 1
+# Get the base application
+application = get_asgi_application()
 
-    @sync_to_async
-    def check_connection():
-        try:
-            connections['default'].ensure_connection()
-            return True
-        except OperationalError:
-            return False
+# Wrap the application to include database connection check
+@sync_to_async
+def check_database():
+    try:
+        connections['default'].ensure_connection()
+    except OperationalError:
+        return False
+    return True
 
-    while current_try <= max_tries:
-        is_connected = await check_connection()
-        if is_connected:
-            break
-        
-        wait = min(current_try * 2, 10)
-        print(f"Database connection failed. Waiting {wait} seconds...")
-        await asyncio.sleep(wait)
-        current_try += 1
+async def database_middleware(scope, receive, send):
+    if scope["type"] == "lifespan":
+        # Handle lifespan messages
+        message = await receive()
+        if message["type"] == "lifespan.startup":
+            # Check database connection on startup
+            is_connected = await check_database()
+            if not is_connected:
+                await send({"type": "lifespan.startup.failed"})
+                return
+            await send({"type": "lifespan.startup.complete"})
+        elif message["type"] == "lifespan.shutdown":
+            await send({"type": "lifespan.shutdown.complete"})
+        return
 
-async def get_application():
-    await check_db_connection()
-    return get_asgi_application()
+    # Pass through to the main application
+    await application(scope, receive, send)
 
-application = asyncio.get_event_loop().run_until_complete(get_application())
+# Replace the base application with our wrapped version
+application = database_middleware
