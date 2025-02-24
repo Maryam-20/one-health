@@ -90,18 +90,33 @@ WSGI_APPLICATION = "techcare.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        engine='django.db.backends.postgresql',
-        ssl_require=True,
-        options={
-            'sslmode': 'require',
+# Database configuration
+if config('ENVIRONMENT', default='development') == 'production':
+    # Production database (Render)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+            engine='django.db.backends.postgresql',
+            ssl_require=True,
+            options={
+                'sslmode': 'require',
+            }
+        )
+    }
+else:
+    # Local development database
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": config('DB_NAME', default='your_local_db'),
+            "USER": config('DB_USER', default='root'),
+            "PASSWORD": config('DB_PASSWORD', default=''),
+            "HOST": config('DB_HOST', default="localhost"),
+            "PORT": config('DB_PORT', cast=int, default=3308),
         }
-    )
-}
+    }
 
 
 
