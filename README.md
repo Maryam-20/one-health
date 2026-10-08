@@ -121,10 +121,10 @@ These screenshots showcase the hospital portal, patient list, and homepage exper
 ### Homepage - Public View
 ![Homepage public view](screenshots/homepage-public.png)
 
-### Homepage - Logged In View
+### Homepage - Logged In View - Non-Admin
 ![Homepage logged in view](screenshots/homepage-logged-in.png)
 
-### Homepage - Settings Dropdown
+### Homepage - Settings Dropdown - Admin
 ![Homepage settings dropdown](screenshots/homepage-settings.png)
 
 ---
