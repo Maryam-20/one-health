@@ -16,6 +16,7 @@ It also supports automatic doctor assignment and real-time notifications using T
 ## 📚 Table of Contents
 
 [Features](#features)
+[Sample Screenshots](#sample-screenshots)
 [Technologies Used](#technologies-used)
 [Installation](#installation)
 [Usage](#usage)
@@ -107,6 +108,24 @@ It also supports automatic doctor assignment and real-time notifications using T
    ```bash
    python manage.py runserver
    ```
+
+---
+
+## 📸 Sample Screenshots
+
+These screenshots showcase the hospital portal, patient list, and homepage experience for the One-Health application.
+
+### Patient Management View
+![Patient Management Table](screenshots/patient-list.png)
+
+### Homepage - Public View
+![Homepage public view](screenshots/homepage-public.png)
+
+### Homepage - Logged In View
+![Homepage logged in view](screenshots/homepage-logged-in.png)
+
+### Homepage - Settings Dropdown
+![Homepage settings dropdown](screenshots/homepage-settings.png)
 
 ---
 
