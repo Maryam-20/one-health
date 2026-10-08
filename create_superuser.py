@@ -18,6 +18,7 @@ User = get_user_model()
 
 # Retrieve credentials from environment variables
 email = os.environ.get("DJANGO_SUPERUSER_EMAIL")
+username = os.environ.get("DJANGO_SUPERUSER_USERNAME")
 first_name = os.environ.get("DJANGO_SUPERUSER_FIRST_NAME", "Admin")
 last_name = os.environ.get("DJANGO_SUPERUSER_LAST_NAME", "User")
 password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
