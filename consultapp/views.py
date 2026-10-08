@@ -7,6 +7,7 @@ from .models import Appointment, Doctor
 from userapp.models import Profile
 from .tasks import send_appointment_notification_task  # We'll create this
 import logging
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 

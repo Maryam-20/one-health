@@ -94,3 +94,16 @@ WARNING 2026-10-08 21:01:03,494 log 8148 Not Found: /favicon.ico
 INFO 2026-10-08 21:02:43,789 autoreload 32868 Watching for file changes with StatReloader
 WARNING 2026-10-08 21:02:48,673 log 32868 Not Found: /assets/img/banner-pattern.svg
 WARNING 2026-10-08 21:02:48,959 log 32868 Not Found: /favicon.ico
+INFO 2026-10-08 21:44:10,136 autoreload 19000 Watching for file changes with StatReloader
+INFO 2026-10-08 21:46:50,541 autoreload 19000 C:\Maryam's File\Code Project\oneHealth\techcare\consultapp\views.py changed, reloading.
+INFO 2026-10-08 21:46:52,539 autoreload 4252 Watching for file changes with StatReloader
+INFO 2026-10-08 21:46:56,680 autoreload 4252 C:\Maryam's File\Code Project\oneHealth\techcare\consultapp\views.py changed, reloading.
+INFO 2026-10-08 21:46:58,101 autoreload 4608 Watching for file changes with StatReloader
+INFO 2026-10-08 21:47:07,530 autoreload 4608 C:\Maryam's File\Code Project\oneHealth\techcare\consultapp\views.py changed, reloading.
+INFO 2026-10-08 21:47:08,741 autoreload 30224 Watching for file changes with StatReloader
+INFO 2026-10-08 21:47:24,372 autoreload 30224 C:\Maryam's File\Code Project\oneHealth\techcare\consultapp\views.py changed, reloading.
+INFO 2026-10-08 21:47:25,645 autoreload 30812 Watching for file changes with StatReloader
+INFO 2026-10-08 21:48:08,139 autoreload 30812 C:\Maryam's File\Code Project\oneHealth\techcare\consultapp\views.py changed, reloading.
+INFO 2026-10-08 21:48:11,517 autoreload 17216 Watching for file changes with StatReloader
+INFO 2026-10-08 21:48:13,517 autoreload 17216 C:\Maryam's File\Code Project\oneHealth\techcare\consultapp\views.py changed, reloading.
+INFO 2026-10-08 21:48:15,065 autoreload 1964 Watching for file changes with StatReloader
