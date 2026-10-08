@@ -5,7 +5,7 @@ print("--- [SUPERUSER SCRIPT STARTED] ---", flush=True)
 
 try:
     import django
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "amaniBackend.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "techcare.settings")
     django.setup()
     print("Django setup completed successfully.", flush=True)
 except Exception as e:
