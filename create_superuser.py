@@ -33,6 +33,7 @@ else:
         print(f"Creating superuser for {email}...", flush=True)
         try:
             User.objects.create_superuser(
+                username=username, 
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
