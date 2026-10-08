@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
-from techcare.userapp.views import SignUpView
+from userapp.views import SignUpView
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 from . import settings
 
@@ -31,8 +31,8 @@ urlpatterns = [
     path('blog_details', TemplateView.as_view(template_name = "blog-details.html"), name = "blog_details"),
     re_path(r'^accounts/', include('django.contrib.auth.urls')),
     re_path(r'^accounts/signup/$', SignUpView.as_view(), name= "signup"),
-    path('userapp/', include('techcare.userapp.urls')),
-    path('consultapp/', include('techcare.consultapp.urls', namespace='consultapp')),
+    path('userapp/', include('userapp.urls')),
+    path('consultapp/', include('consultapp.urls', namespace='consultapp')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

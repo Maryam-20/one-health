@@ -12,12 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config
+from decouple import config, Csv
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = BASE_DIR / "techcare"
 # print(PROJECT_DIR)
 # print(BASE_DIR)
 
@@ -33,12 +33,10 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    'https://one-health-0oxk.onrender.com',  
-    'localhost',
-    '127.0.0.1',
-    '*',
-]
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -51,12 +49,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bootstrapform",
-    "techcare.userapp",
-    "techcare.consultapp",
-    "techcare.paymentapp",
-    "techcare.serviceapp",
+    "userapp",
+    "consultapp",
+    "paymentapp",
+    "serviceapp",
     "rest_framework",
-    "techcare.telex",
+    "telex",
     'asgiref',
 ]
 
@@ -76,7 +74,7 @@ ROOT_URLCONF = "techcare.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ['%s/template/' % (PROJECT_DIR),],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -96,7 +94,8 @@ WSGI_APPLICATION = "techcare.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # Database configuration
-if config('ENVIRONMENT', default='development') == 'production':
+DATABASE_URL = config("DATABASE_URL", default=None)
+if DATABASE_URL:
     # Production database (Render)
     DATABASES = {
         'default': dj_database_url.config(
@@ -110,11 +109,11 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
-            "NAME": config('DB_NAME', default='your_local_db'),
-            "USER": config('DB_USER', default='root'),
-            "PASSWORD": config('DB_PASSWORD', default=''),
-            "HOST": config('DB_HOST', default="localhost"),
-            "PORT": config('DB_PORT', cast=int, default=3308),
+            "NAME": config('DB_NAME'),
+            "USER": config('DB_USER'),
+            "PASSWORD": config('DB_PASSWORD'),
+            "HOST": config('DB_HOST'),
+            "PORT": config('DB_PORT'),
         }
     }
 
@@ -133,14 +132,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+EMAIL_HOST = config("EMAIL_HOST", default=None)
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = "maryamanileleye@gmail.com"
-# EMAIL_HOST_PASSWORD = "*******"
-# EMAIL_USE_TSL = True
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
+    EMAIL_PORT = config("EMAIL_PORT", default=465, cast=int)
+    EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=True, cast=bool)
+    EMAIL_USE_TLS = config("EMAIL_USE_TSL", default=True, cast=bool)
+    EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+    DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -171,8 +175,9 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+REDIS_URL =config("REDIS_URL")
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -221,7 +226,7 @@ LOGGING = {
             'handlers': ['console', 'file'],
             'level': 'INFO',
         },
-        'techcare.consultapp': {
+        'consultapp': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': False,
